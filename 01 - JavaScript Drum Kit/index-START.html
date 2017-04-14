@@ -58,6 +58,31 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  const playSound = (e) => {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    if(!audio) return; // return if audio doesnt exist
+    audio.currentTime = 0; // rewind to beginning on each key press
+    audio.play();
+
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    key.classList.add('playing');
+  };
+
+// if es6 arrow notation is used for endTransition function, 'this' keyword will refer to the window, NOT the pressed key.
+
+  function endTransition(e){
+    if (e.propertyName !== "transform") return;
+
+    this.classList.remove('playing');
+  }
+
+  const keys = document.querySelectorAll('.key');
+  keys.forEach((key) => {
+    key.addEventListener('transitionend', endTransition);
+  })
+
+  window.addEventListener('keydown', playSound);
+
 
 </script>
 
